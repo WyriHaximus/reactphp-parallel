@@ -1,0 +1,39 @@
+{
+    "name": "wyrihaximus/react-parallel",
+    "description": "Bridging ext-parallel and ReactPHP",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Cees-Jan Kiewiet",
+            "email": "ceesjank@gmail.com",
+            "homepage": "http://wyrihaximus.net/"
+        }
+    ],
+    "require": {
+        "php": "^7.2",
+        "ext-parallel": "*",
+        "react/event-loop": "^1.1",
+        "react/promise": "^2.7",
+        "wyrihaximus/ticking-promise": "^1.6"
+    },
+    "require-dev": {
+        "ocramius/package-versions": "^1.4",
+        "wyrihaximus/async-test-utilities": "^1.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "WyriHaximus\\React\\Parallel\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "WyriHaximus\\React\\Tests\\Parallel\\": "tests/"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform": {
+            "php": "7.2"
+        }
+    }
+}
