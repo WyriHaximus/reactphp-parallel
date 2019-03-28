@@ -2,11 +2,10 @@ version: 2
 jobs:
   build:
     docker:
-      - image: wyrihaximus/temporary-php:latest
+      - image: wyrihaximusnet/php:7.3-zts-alpine3.9-dev
     working_directory: ~/repo
     steps:
       - checkout
-      - run: composer global require hirak/prestissimo
       - run: composer install -n --ansi --no-progress --optimize-autoloader
       - run: php -v
       - run: php -m
