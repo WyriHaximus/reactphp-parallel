@@ -1,0 +1,6 @@
+parameters:
+	ignoreErrors:
+		- '#Class parallel\\Runtime constructor invoked with 1 parameter, 0 required.#'
+
+includes:
+	- vendor/wyrihaximus/test-utilities/rules.neon
