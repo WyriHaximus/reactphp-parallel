@@ -36,7 +36,6 @@ matrix:
         - dropPlatform=false
 
 before_install:
-  - docker pull wyrihaximusnet/php
   - docker pull wyrihaximusnet/php:7.3-zts-alpine3.9-dev
 
 ## Install or update dependencies
