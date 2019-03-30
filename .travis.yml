@@ -40,6 +40,7 @@ before_install:
 
 ## Install or update dependencies
 install:
+  - mkdir vendor
   - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer validate
   - if [ -z "$dropPlatform" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer config --unset platform.php; fi;
 #  - if [ -z "$qaExtended" ]; then phpenv config-rm xdebug.ini || :; fi;
