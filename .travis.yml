@@ -1,0 +1,61 @@
+language: php
+
+services:
+  - docker
+
+## Cache composer bits
+cache:
+  directories:
+    - $HOME/.composer/cache/files
+
+## Build matrix for lowest and highest possible targets
+matrix:
+  include:
+    - php: 7.3
+      env:
+        - qaExtended=true
+        - dropPlatform=false
+    - php: nightly
+      env:
+        - dropPlatform=false
+    - php: 7.3
+      env:
+        - dependencies=lowest
+        - dropPlatform=false
+    - php: nightly
+      env:
+        - dependencies=lowest
+        - dropPlatform=false
+    - php: 7.3
+      env:
+        - dependencies=highest
+        - dropPlatform=false
+    - php: nightly
+      env:
+        - dependencies=highest
+        - dropPlatform=false
+
+before_install:
+  - docker pull wyrihaximusnet/php
+  - docker pull wyrihaximusnet/php:7.3-zts-alpine3.9-dev
+
+## Install or update dependencies
+install:
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer validate
+  - if [ -z "$dropPlatform" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer config --unset platform.php; fi;
+#  - if [ -z "$qaExtended" ]; then phpenv config-rm xdebug.ini || :; fi;
+  - if [ -z "$dependencies" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer install --prefer-dist; fi;
+  - if [ "$dependencies" = "lowest" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer update --prefer-lowest --prefer-dist -n; fi;
+  - if [ "$dependencies" = "highest" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer update --prefer-dist -n; fi;
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" composer show
+
+## Run the actual test
+script:
+  - if [ -z "$qaExtended" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci; fi;
+  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci-extended; fi;
+
+## Gather coverage and set it to coverage servers
+after_script:
+  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci-coverage; fi;
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" php examples/sleep.php
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" php examples/versions.php
