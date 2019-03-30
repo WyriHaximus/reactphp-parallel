@@ -1,0 +1,6 @@
+.travis.yml export-ignore
+.gitignore export-ignore
+.gitattributes export-ignore
+.scrutinizer.yml export-ignore
+phpunit.xml.dist export-ignore
+Makefile export-ignore
