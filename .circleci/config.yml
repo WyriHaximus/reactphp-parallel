@@ -9,6 +9,7 @@ jobs:
       - run: composer install -n --ansi --no-progress --optimize-autoloader
       - run: php -v
       - run: php -m
+      - run: make ci-extended
       - run: php examples/sleep.php
       - run: php examples/versions.php
 
