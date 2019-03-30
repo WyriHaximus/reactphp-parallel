@@ -1,19 +1,20 @@
-<?php
+<?php declare(strict_types=1);
 
 namespace WyriHaximus\React\Parallel;
 
 use ArrayIterator;
 use InfiniteIterator;
 use Iterator;
-use parallel\Exception;
 use parallel\Runtime;
-use parallel\Future;
 use React\EventLoop\LoopInterface;
+use React\EventLoop\TimerInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
+use WyriHaximus\PoolInfo\Info;
+use WyriHaximus\PoolInfo\PoolInfoInterface;
 use function WyriHaximus\React\futurePromise;
 
-final class Finite
+final class Finite implements PoolInfoInterface
 {
     /** @var LoopInterface */
     private $loop;
@@ -26,13 +27,13 @@ final class Finite
 
     /**
      * @param LoopInterface $loop
-     * @param int $threadCount
+     * @param int           $threadCount
      */
     public function __construct(LoopInterface $loop, int $threadCount)
     {
         $this->loop = $loop;
 
-        $autoload = dirname(__FILE__, 2) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
+        $autoload = \dirname(__FILE__, 2) . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
         for ($i = 0; $i < $threadCount; $i++) {
             $this->runtimes[] = new Runtime($autoload);
         }
@@ -43,15 +44,18 @@ final class Finite
     public function run(callable $callable, array $args = []): PromiseInterface
     {
         return futurePromise($this->loop)->then(function () use ($callable, $args) {
-            return new Promise(function ($resolve, $reject) use ($callable, $args) {
+            return new Promise(function ($resolve, $reject) use ($callable, $args): void {
                 $this->iterator->next();
                 $future = $this->iterator->current()->run($callable, $args);
-                $timer = $this->loop->addPeriodicTimer(0.001, function () use (&$timer, $future, $resolve, $reject) {
+                /** @var TimerInterface $timer */
+                $timer = $this->loop->addPeriodicTimer(0.001, function () use (&$timer, $future, $resolve, $reject): void {
                     if ($future->done() === false) {
                         return;
                     }
 
-                    $this->loop->cancelTimer($timer);
+                    if ($timer instanceof TimerInterface) {
+                        $this->loop->cancelTimer($timer);
+                    }
                     try {
                         $resolve($future->value());
                     } catch (\Throwable $throwable) {
@@ -62,17 +66,26 @@ final class Finite
         });
     }
 
-    public function close()
+    public function close(): void
     {
         foreach ($this->runtimes as $runtime) {
             $runtime->close();
         }
     }
 
-    public function kill()
+    public function kill(): void
     {
         foreach ($this->runtimes as $runtime) {
             $runtime->kill();
         }
+    }
+
+    public function info(): iterable
+    {
+        yield Info::TOTAL => \count($this->runtimes);
+        yield Info::BUSY => \count($this->runtimes);
+        yield Info::CALLS => 0;
+        yield Info::IDLE  => 0;
+        yield Info::SIZE  => \count($this->runtimes);
     }
 }
