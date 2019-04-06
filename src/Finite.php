@@ -11,10 +11,9 @@ use React\EventLoop\TimerInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
-use WyriHaximus\PoolInfo\PoolInfoInterface;
 use function WyriHaximus\React\futurePromise;
 
-final class Finite implements PoolInfoInterface
+final class Finite implements PoolInterface
 {
     /** @var LoopInterface */
     private $loop;
