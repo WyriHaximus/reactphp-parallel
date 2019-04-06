@@ -33,9 +33,10 @@ final class Finite implements PoolInfoInterface
     {
         $this->loop = $loop;
 
+        $autoload = \dirname(__FILE__) . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
         foreach ([2, 5] as $level) {
             $autoload = \dirname(__FILE__, $level) . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
-            if (file_exists($autoload)) {
+            if (\file_exists($autoload)) {
                 break;
             }
         }
