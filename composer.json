@@ -54,7 +54,7 @@
             "php-cs-fixer fix --config=.php_cs --ansi --verbose --allow-risky=yes --show-progress=estimating"
         ],
         "infection": [
-            "infection --ansi --threads=4 -c infection.json.dist"
+            "infection --ansi --threads=4"
         ],
         "lint-php": [
             "parallel-lint --exclude vendor ."

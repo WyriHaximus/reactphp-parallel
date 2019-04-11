@@ -1,6 +1,8 @@
 parameters:
 	ignoreErrors:
 		- '#Class parallel\\Runtime constructor invoked with 1 parameter, 0 required.#'
+		- '#Method parallel\\Runtime::run\(\) invoked with 2 parameters, 0 required.#'
+		- '#Call to an undefined method React\\Promise\\PromiseInterface::always\(\).#'
 
 includes:
 	- vendor/wyrihaximus/test-utilities/rules.neon
