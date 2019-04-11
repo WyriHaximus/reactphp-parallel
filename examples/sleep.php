@@ -2,15 +2,19 @@
 
 
 use React\EventLoop\Factory;
-use function React\Promise\all;
-use function React\Promise\resolve;
 use WyriHaximus\React\Parallel\Finite;
+use function React\Promise\all;
+use function WyriHaximus\iteratorOrArrayToArray;
 
 require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR . 'autoload.php';
 
 $loop = Factory::create();
 
 $finite = new Finite($loop, 250);
+
+$timer = $loop->addPeriodicTimer(1, function () use ($finite) {
+    var_export(iteratorOrArrayToArray($finite->info()));
+});
 
 $promises = [];
 foreach (range(0, 1000) as $i) {
@@ -28,10 +32,11 @@ $signalHandler = function () use ($finite, $loop) {
     $loop->stop();
     $finite->close();
 };
-all($promises)->done(function ($v) use ($finite, $loop, $signalHandler) {
+all($promises)->then(function ($v) use ($finite, $loop, $signalHandler, $timer) {
     $finite->close();
     $loop->removeSignal(SIGINT, $signalHandler);
-});
+    $loop->cancelTimer($timer);
+})->done();
 
 $loop->addSignal(SIGINT, $signalHandler);
 
