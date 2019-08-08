@@ -65,7 +65,8 @@
             "@lint-php",
             "@cs",
             "@stan",
-            "@unit"
+            "@unit",
+            "@infection"
         ],
         "qa-all-extended": [
             "composer validate --ansi",
