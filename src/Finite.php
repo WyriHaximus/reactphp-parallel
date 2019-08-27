@@ -4,7 +4,6 @@ namespace WyriHaximus\React\Parallel;
 
 use parallel\Runtime;
 use React\EventLoop\LoopInterface;
-use React\EventLoop\TimerInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
@@ -23,6 +22,9 @@ final class Finite implements PoolInterface
 
     /** @var array */
     private $queue;
+
+    /** @var FutureToPromiseConverter */
+    private $futureConverter;
 
     /**
      * @param LoopInterface $loop
@@ -46,6 +48,7 @@ final class Finite implements PoolInterface
             $this->runtimes[\spl_object_hash($runtime)] = $runtime;
         }
         $this->idleRuntimes = \array_keys($this->runtimes);
+        $this->futureConverter = new FutureToPromiseConverter($loop);
     }
 
     public function run(callable $callable, array $args = []): PromiseInterface
@@ -117,23 +120,8 @@ final class Finite implements PoolInterface
 
     private function call(Runtime $runtime, callable $callable, array $args = []): PromiseInterface
     {
-        return new Promise(function ($resolve, $reject) use ($runtime, $callable, $args): void {
-            $future = $runtime->run($callable, $args);
-            /** @var TimerInterface $timer */
-            $timer = $this->loop->addPeriodicTimer(0.001, function () use (&$timer, $future, $resolve, $reject): void {
-                if ($future->done() === false) {
-                    return;
-                }
+        $future = $runtime->run($callable, $args);
 
-                if ($timer instanceof TimerInterface) {
-                    $this->loop->cancelTimer($timer);
-                }
-                try {
-                    $resolve($future->value());
-                } catch (\Throwable $throwable) {
-                    $reject($throwable);
-                }
-            });
-        });
+        return $this->futureConverter->convert($future);
     }
 }
