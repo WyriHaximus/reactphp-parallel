@@ -25,7 +25,7 @@ matrix:
         - dropPlatform=false
 
 before_install:
-  - docker pull wyrihaximusnet/php:7.3-zts-alpine3.9-dev
+  - docker pull wyrihaximusnet/php:7.3-zts-alpine3.10-dev
 
 ## Install or update dependencies
 install:
@@ -40,11 +40,11 @@ install:
 
 ## Run the actual test
 script:
-  - if [ -z "$qaExtended" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci; fi;
-  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci-extended; fi;
+  - if [ -z "$qaExtended" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.10-dev" make ci; fi;
+  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.10-dev" make ci-extended; fi;
 
 ## Gather coverage and set it to coverage servers
 after_script:
-  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" make ci-coverage; fi;
-  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" php examples/sleep.php
-  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.9-dev" php examples/versions.php
+  - if [ "$qaExtended" = "true" ]; then docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.10-dev" make ci-coverage; fi;
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.10-dev" php examples/sleep.php
+  - docker run --rm -v `pwd`:`pwd` -w `pwd` -t "wyrihaximusnet/php:7.3-zts-alpine3.10-dev" php examples/versions.php
