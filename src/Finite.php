@@ -2,7 +2,6 @@
 
 namespace WyriHaximus\React\Parallel;
 
-use parallel\Runtime;
 use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
@@ -43,12 +42,12 @@ final class Finite implements PoolInterface
             }
         }
 
+        $this->futureConverter = new FutureToPromiseConverter($loop);
         for ($i = 0; $i < $threadCount; $i++) {
-            $runtime = new Runtime($autoload);
+            $runtime = new Runtime($this->futureConverter, $autoload);
             $this->runtimes[\spl_object_hash($runtime)] = $runtime;
         }
         $this->idleRuntimes = \array_keys($this->runtimes);
-        $this->futureConverter = new FutureToPromiseConverter($loop);
     }
 
     public function run(callable $callable, array $args = []): PromiseInterface
@@ -64,7 +63,7 @@ final class Finite implements PoolInterface
                 $resolve($this->getIdleRuntime());
             });
         })->then(function (Runtime $runtime) use ($callable, $args) {
-            return $this->call($runtime, $callable, $args)->always(function () use ($runtime): void {
+            return $runtime->run($callable, $args)->always(function () use ($runtime): void {
                 $this->addRuntimeToIdleList($runtime);
                 $this->progressQueue();
             });
@@ -116,12 +115,5 @@ final class Finite implements PoolInterface
         } catch (\Throwable $throwable) {
             $reject($throwable);
         }
-    }
-
-    private function call(Runtime $runtime, callable $callable, array $args = []): PromiseInterface
-    {
-        $future = $runtime->run($callable, $args);
-
-        return $this->futureConverter->convert($future);
     }
 }
