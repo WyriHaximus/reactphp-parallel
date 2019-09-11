@@ -7,7 +7,6 @@ use React\EventLoop\TimerInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
-use function WyriHaximus\React\futurePromise;
 
 final class Infinite implements PoolInterface
 {
@@ -62,7 +61,7 @@ final class Infinite implements PoolInterface
 
             $resolve($this->getIdleRuntime());
         }))->then(function (Runtime $runtime) use ($callable, $args) {
-            return $runtime->run($callable, ...$args)->always(function () use ($runtime): void {
+            return $runtime->run($callable, $args)->always(function () use ($runtime): void {
                 $this->addRuntimeToIdleList($runtime);
                 $this->startTtlTimer($runtime);
             });
@@ -95,7 +94,7 @@ final class Infinite implements PoolInterface
     private function getIdleRuntime(): Runtime
     {
         $hash = \array_pop($this->idleRuntimes);
-        if (array_key_exists($hash, $this->ttlTimers)) {
+        if (\array_key_exists($hash, $this->ttlTimers)) {
             $this->loop->cancelTimer($this->ttlTimers[$hash]);
             unset($this->ttlTimers[$hash]);
         }
@@ -133,10 +132,10 @@ final class Infinite implements PoolInterface
 
         unset($this->runtimes[$hash]);
 
-        if (array_key_exists($hash, $this->idleRuntimes)) {
+        if (\array_key_exists($hash, $this->idleRuntimes)) {
             unset($this->idleRuntimes[$hash]);
         }
-        if (array_key_exists($hash, $this->ttlTimers)) {
+        if (\array_key_exists($hash, $this->ttlTimers)) {
             $this->loop->cancelTimer($this->ttlTimers[$hash]);
             unset($this->ttlTimers[$hash]);
         }
