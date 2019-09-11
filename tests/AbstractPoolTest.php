@@ -5,17 +5,15 @@ namespace WyriHaximus\React\Tests\Parallel;
 use Money\Money;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
+use function React\Promise\all;
 use WyriHaximus\AsyncTestUtilities\AsyncTestCase;
 use WyriHaximus\React\Parallel\PoolInterface;
-use function React\Promise\all;
 
 /**
  * @internal
  */
 abstract class AbstractPoolTest extends AsyncTestCase
 {
-    abstract protected function createPool(LoopInterface $loop): PoolInterface;
-
     public function provideCallablesAndTheirExpectedResults()
     {
         yield 'math' => [
@@ -66,7 +64,7 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
         yield 'sleep' => [
             function () {
-                sleep(1);
+                \sleep(1);
 
                 return true;
             },
@@ -77,13 +75,14 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
     /**
      * @dataProvider provideCallablesAndTheirExpectedResults
+     * @param mixed $expectedResult
      */
-    public function testFullRunThrough(callable $callable, array $args, $expectedResult)
+    public function testFullRunThrough(callable $callable, array $args, $expectedResult): void
     {
         $loop = Factory::create();
         $pool = $this->createPool($loop);
 
-        $promise = $pool->run($callable, $args)->always(function () use ($pool) {
+        $promise = $pool->run($callable, $args)->always(function () use ($pool): void {
             $pool->close();
         });
         $result = $this->await($promise, $loop);
@@ -93,17 +92,18 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
     /**
      * @dataProvider provideCallablesAndTheirExpectedResults
+     * @param mixed $expectedResult
      */
-    public function testFullRunThroughMultipleConsecutiveCalls(callable $callable, array $args, $expectedResult)
+    public function testFullRunThroughMultipleConsecutiveCalls(callable $callable, array $args, $expectedResult): void
     {
         $loop = Factory::create();
         $pool = $this->createPool($loop);
 
         $promises = [];
-        foreach (range(0, 8) as $i) {
+        foreach (\range(0, 8) as $i) {
             $promises[$i] = $pool->run($callable, $args);
         }
-        $results = $this->await(all($promises)->always(function () use ($pool) {
+        $results = $this->await(all($promises)->always(function () use ($pool): void {
             $pool->close();
         }), $loop);
 
@@ -111,4 +111,6 @@ abstract class AbstractPoolTest extends AsyncTestCase
             self::assertSame($expectedResult, $result);
         }
     }
+
+    abstract protected function createPool(LoopInterface $loop): PoolInterface;
 }

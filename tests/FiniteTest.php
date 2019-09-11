@@ -9,7 +9,6 @@ use WyriHaximus\PoolInfo\PoolInfoTestTrait;
 use WyriHaximus\React\Parallel\Finite;
 use WyriHaximus\React\Parallel\infinite;
 use WyriHaximus\React\Parallel\PoolInterface;
-use WyriHaximus\TestUtilities\TestCase;
 
 /**
  * @internal
