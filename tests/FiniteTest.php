@@ -7,7 +7,6 @@ use React\EventLoop\LoopInterface;
 use WyriHaximus\PoolInfo\PoolInfoInterface;
 use WyriHaximus\PoolInfo\PoolInfoTestTrait;
 use WyriHaximus\React\Parallel\Finite;
-use WyriHaximus\React\Parallel\infinite;
 use WyriHaximus\React\Parallel\PoolInterface;
 
 /**
@@ -24,6 +23,6 @@ final class FiniteTest extends AbstractPoolTest
 
     protected function createPool(LoopInterface $loop): PoolInterface
     {
-        return new Infinite($loop, 5);
+        return new Finite($loop, 5);
     }
 }

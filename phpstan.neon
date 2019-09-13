@@ -1,8 +1,9 @@
 parameters:
 	ignoreErrors:
-		- '#Class parallel\\Runtime constructor invoked with 1 parameter, 0 required.#'
-		- '#Method parallel\\Runtime::run\(\) invoked with 2 parameters, 0 required.#'
 		- '#Call to an undefined method React\\Promise\\PromiseInterface::always\(\).#'
+		- '#In method "WyriHaximus\\React\\Parallel\\Finite::progressQueue", caught "Throwable" must be rethrown. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception. More info: http:\/\/bit.ly\/failloud#'
+	classesAllowedToBeExtended:
+		- WyriHaximus\React\Tests\Parallel\AbstractPoolTest
 
 includes:
-	- vendor/wyrihaximus/test-utilities/rules.neon
+	- vendor/wyrihaximus/async-test-utilities/rules.neon

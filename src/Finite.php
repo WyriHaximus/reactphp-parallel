@@ -2,6 +2,7 @@
 
 namespace WyriHaximus\React\Parallel;
 
+use Closure;
 use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
@@ -50,7 +51,7 @@ final class Finite implements PoolInterface
         $this->idleRuntimes = \array_keys($this->runtimes);
     }
 
-    public function run(callable $callable, array $args = []): PromiseInterface
+    public function run(Closure $callable, array $args = []): PromiseInterface
     {
         return futurePromise($this->loop)->then(function () {
             return new Promise(function ($resolve, $reject): void {
