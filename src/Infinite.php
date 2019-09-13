@@ -2,6 +2,7 @@
 
 namespace WyriHaximus\React\Parallel;
 
+use Closure;
 use React\EventLoop\LoopInterface;
 use React\EventLoop\TimerInterface;
 use React\Promise\Promise;
@@ -50,7 +51,7 @@ final class Infinite implements PoolInterface
         $this->futureConverter = new FutureToPromiseConverter($loop);
     }
 
-    public function run(callable $callable, array $args = []): PromiseInterface
+    public function run(Closure $callable, array $args = []): PromiseInterface
     {
         return (new Promise(function ($resolve, $reject): void {
             if (\count($this->idleRuntimes) === 0) {
@@ -62,8 +63,14 @@ final class Infinite implements PoolInterface
             $resolve($this->getIdleRuntime());
         }))->then(function (Runtime $runtime) use ($callable, $args) {
             return $runtime->run($callable, $args)->always(function () use ($runtime): void {
-                $this->addRuntimeToIdleList($runtime);
-                $this->startTtlTimer($runtime);
+                if ($this->ttl >= 0.1) {
+                    $this->addRuntimeToIdleList($runtime);
+                    $this->startTtlTimer($runtime);
+
+                    return;
+                }
+
+                $this->closeRuntime(\spl_object_hash($runtime));
             });
         });
     }
@@ -93,7 +100,9 @@ final class Infinite implements PoolInterface
 
     private function getIdleRuntime(): Runtime
     {
+        /** @var string $hash */
         $hash = \array_pop($this->idleRuntimes);
+
         if (\array_key_exists($hash, $this->ttlTimers)) {
             $this->loop->cancelTimer($this->ttlTimers[$hash]);
             unset($this->ttlTimers[$hash]);
@@ -108,7 +117,7 @@ final class Infinite implements PoolInterface
         $this->idleRuntimes[$hash] = $hash;
     }
 
-    private function spawnRuntime()
+    private function spawnRuntime(): Runtime
     {
         $runtime = new Runtime($this->futureConverter, $this->autoload);
         $this->runtimes[\spl_object_hash($runtime)] = $runtime;

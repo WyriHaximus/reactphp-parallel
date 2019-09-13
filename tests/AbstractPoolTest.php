@@ -2,19 +2,21 @@
 
 namespace WyriHaximus\React\Tests\Parallel;
 
+use Closure;
 use Money\Money;
 use React\EventLoop\Factory;
 use React\EventLoop\LoopInterface;
 use function React\Promise\all;
 use WyriHaximus\AsyncTestUtilities\AsyncTestCase;
 use WyriHaximus\React\Parallel\PoolInterface;
+use function Safe\sleep;
 
 /**
  * @internal
  */
 abstract class AbstractPoolTest extends AsyncTestCase
 {
-    public function provideCallablesAndTheirExpectedResults()
+    public function provideCallablesAndTheirExpectedResults(): iterable
     {
         yield 'math' => [
             function (int ...$ints) {
@@ -64,7 +66,7 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
         yield 'sleep' => [
             function () {
-                \sleep(1);
+                sleep(1);
 
                 return true;
             },
@@ -75,9 +77,10 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
     /**
      * @dataProvider provideCallablesAndTheirExpectedResults
+     * @param mixed[] $args
      * @param mixed $expectedResult
      */
-    public function testFullRunThrough(callable $callable, array $args, $expectedResult): void
+    public function testFullRunThrough(Closure $callable, array $args, $expectedResult): void
     {
         $loop = Factory::create();
         $pool = $this->createPool($loop);
@@ -92,9 +95,10 @@ abstract class AbstractPoolTest extends AsyncTestCase
 
     /**
      * @dataProvider provideCallablesAndTheirExpectedResults
+     * @param mixed[] $args
      * @param mixed $expectedResult
      */
-    public function testFullRunThroughMultipleConsecutiveCalls(callable $callable, array $args, $expectedResult): void
+    public function testFullRunThroughMultipleConsecutiveCalls(Closure $callable, array $args, $expectedResult): void
     {
         $loop = Factory::create();
         $pool = $this->createPool($loop);
