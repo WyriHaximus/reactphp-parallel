@@ -4,5 +4,4 @@ namespace WyriHaximus\React\Parallel;
 
 final class ClosingException extends \Exception
 {
-
 }
