@@ -2,6 +2,8 @@ parameters:
 	ignoreErrors:
 		- '#Call to an undefined method React\\Promise\\PromiseInterface::always\(\).#'
 		- '#In method "WyriHaximus\\React\\Parallel\\Finite::progressQueue", caught "Throwable" must be rethrown. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception. More info: http:\/\/bit.ly\/failloud#'
+		- '#In method "WyriHaximus\\React\\Parallel\\Stream::recv", caught "Throwable" must be rethrown. Either catch a more specific exception or add a "throw" clause in the "catch" block to propagate the exception. More info: http:\/\/bit.ly\/failloud#'
+		- '#Parameter \#1 $timer of method React\\EventLoop\\LoopInterface::cancelTimer() expects React\\EventLoop\\TimerInterface, React\\EventLoop\\TimerInterface|null given.#'
 	classesAllowedToBeExtended:
 		- Exception
 		- WyriHaximus\React\Tests\Parallel\AbstractPoolTest
