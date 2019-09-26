@@ -9,7 +9,7 @@ use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
 
-final class Infinite implements PoolInterface
+final class Infinite implements LowLevelPoolInterface
 {
     /** @var LoopInterface */
     private $loop;
@@ -31,6 +31,9 @@ final class Infinite implements PoolInterface
 
     /** @var float */
     private $ttl;
+
+    /** @var Group[] */
+    private $groups = [];
 
     /**
      * @param LoopInterface $loop
@@ -77,6 +80,10 @@ final class Infinite implements PoolInterface
 
     public function close(): void
     {
+        if (count($this->groups) > 0) {
+            return;
+        }
+
         foreach ($this->runtimes as $hash => $runtime) {
             $this->closeRuntime($hash);
         }
@@ -84,6 +91,10 @@ final class Infinite implements PoolInterface
 
     public function kill(): void
     {
+        if (count($this->groups) > 0) {
+            return;
+        }
+
         foreach ($this->runtimes as $runtime) {
             $runtime->kill();
         }
@@ -96,6 +107,19 @@ final class Infinite implements PoolInterface
         yield Info::CALLS => 0;
         yield Info::IDLE  => \count($this->idleRuntimes);
         yield Info::SIZE  => \count($this->runtimes);
+    }
+
+    public function acquireGroup(): Group
+    {
+        $group = Group::create();
+        $this->groups[(string)$group] = $group;
+
+        return $group;
+    }
+
+    public function releaseGroup(Group $group): void
+    {
+        unset($this->groups[(string)$group]);
     }
 
     private function getIdleRuntime(): Runtime
