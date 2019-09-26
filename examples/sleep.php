@@ -10,14 +10,14 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR 
 
 $loop = Factory::create();
 
-$finite = new Finite($loop, 250);
+$finite = Finite::create($loop, 100);
 
 $timer = $loop->addPeriodicTimer(1, function () use ($finite) {
     var_export(iteratorOrArrayToArray($finite->info()));
 });
 
 $promises = [];
-foreach (range(0, 1000) as $i) {
+foreach (range(0, 250) as $i) {
     $promises[] = $finite->run(function($sleep) {
         sleep($sleep);
         return $sleep;
