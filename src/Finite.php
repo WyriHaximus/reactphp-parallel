@@ -7,65 +7,64 @@ use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
-use function WyriHaximus\React\futurePromise;
 
 final class Finite implements PoolInterface
 {
-    /** @var LoopInterface */
-    private $loop;
+    /** @var PoolInterface */
+    private $pool;
 
-    /** @var Runtime[] */
-    private $runtimes = [];
+    /** @var int */
+    private $threadCount;
 
-    /** @var string[] */
-    private $idleRuntimes = [];
+    /** @var int */
+    private $idleRuntimes;
 
     /** @var array */
     private $queue;
 
-    /** @var FutureToPromiseConverter */
-    private $futureConverter;
+    /** @var Group|null */
+    private $group;
+
+    public static function create(LoopInterface $loop, int $threadCount): self
+    {
+        return new self(new Infinite($loop, 1), $threadCount);
+    }
+
+    public static function createWithPool(PoolInterface $pool, int $threadCount): self
+    {
+        return new self($pool, $threadCount);
+    }
 
     /**
-     * @param LoopInterface $loop
+     * @param PoolInterface $pool
      * @param int           $threadCount
      */
-    public function __construct(LoopInterface $loop, int $threadCount)
+    private function __construct(PoolInterface $pool, int $threadCount)
     {
-        $this->loop = $loop;
+        $this->pool = $pool;
+        $this->threadCount = $threadCount;
+        $this->idleRuntimes = $threadCount;
         $this->queue = [];
 
-        $autoload = \dirname(__FILE__) . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
-        foreach ([2, 5] as $level) {
-            $autoload = \dirname(__FILE__, $level) . \DIRECTORY_SEPARATOR . 'vendor' . \DIRECTORY_SEPARATOR . 'autoload.php';
-            if (\file_exists($autoload)) {
-                break;
-            }
+        if ($this->pool instanceof LowLevelPoolInterface) {
+            $this->group = $this->pool->acquireGroup();
         }
-
-        $this->futureConverter = new FutureToPromiseConverter($loop);
-        for ($i = 0; $i < $threadCount; $i++) {
-            $runtime = new Runtime($this->futureConverter, $autoload);
-            $this->runtimes[\spl_object_hash($runtime)] = $runtime;
-        }
-        $this->idleRuntimes = \array_keys($this->runtimes);
     }
 
     public function run(Closure $callable, array $args = []): PromiseInterface
     {
-        return futurePromise($this->loop)->then(function () {
-            return new Promise(function ($resolve, $reject): void {
-                if (\count($this->idleRuntimes) === 0) {
-                    $this->queue[] = [$resolve, $reject];
+        return (new Promise(function ($resolve, $reject): void {
+            if ($this->idleRuntimes === 0) {
+                $this->queue[] = [$resolve, $reject];
 
-                    return;
-                }
+                return;
+            }
 
-                $resolve($this->getIdleRuntime());
-            });
-        })->then(function (Runtime $runtime) use ($callable, $args) {
-            return $runtime->run($callable, $args)->always(function () use ($runtime): void {
-                $this->addRuntimeToIdleList($runtime);
+            $resolve();
+        }))->then(function () use ($callable, $args) {
+            $this->idleRuntimes--;
+            return $this->pool->run($callable, $args)->always(function (): void {
+                $this->idleRuntimes++;
                 $this->progressQueue();
             });
         });
@@ -73,35 +72,29 @@ final class Finite implements PoolInterface
 
     public function close(): void
     {
-        foreach ($this->runtimes as $runtime) {
-            $runtime->close();
+        if ($this->pool instanceof LowLevelPoolInterface) {
+            $this->pool->releaseGroup($this->group);
         }
+
+        $this->pool->close();
     }
 
     public function kill(): void
     {
-        foreach ($this->runtimes as $runtime) {
-            $runtime->kill();
+        if ($this->pool instanceof LowLevelPoolInterface) {
+            $this->pool->releaseGroup($this->group);
         }
+
+        $this->pool->kill();
     }
 
     public function info(): iterable
     {
-        yield Info::TOTAL => \count($this->runtimes);
-        yield Info::BUSY => \count($this->runtimes) - \count($this->idleRuntimes);
+        yield Info::TOTAL => $this->threadCount;
+        yield Info::BUSY => $this->threadCount - $this->idleRuntimes;
         yield Info::CALLS => \count($this->queue);
-        yield Info::IDLE  => \count($this->idleRuntimes);
-        yield Info::SIZE  => \count($this->runtimes);
-    }
-
-    private function getIdleRuntime(): Runtime
-    {
-        return $this->runtimes[\array_pop($this->idleRuntimes)];
-    }
-
-    private function addRuntimeToIdleList(Runtime $runtime): void
-    {
-        $this->idleRuntimes[] =\spl_object_hash($runtime);
+        yield Info::IDLE  => $this->idleRuntimes;
+        yield Info::SIZE  => $this->threadCount;
     }
 
     private function progressQueue(): void
@@ -112,7 +105,7 @@ final class Finite implements PoolInterface
 
         [$resolve, $reject] = \array_pop($this->queue);
         try {
-            $resolve($this->getIdleRuntime());
+            $resolve();
         } catch (\Throwable $throwable) {
             $reject($throwable);
         }
