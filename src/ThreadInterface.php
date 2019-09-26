@@ -2,10 +2,16 @@
 
 namespace WyriHaximus\React\Parallel;
 
-use React\Promise\PromiseInterface;
-use WyriHaximus\PoolInfo\PoolInfoInterface;
-
+/**
+ * Worker class that runs inside a thread.
+ */
 interface ThreadInterface
 {
+    /**
+     * @param string $target
+     * @param mixed[] $args
+     *
+     * @return mixed
+     */
     public function execute(string $target, array $args = []);
 }
