@@ -24,6 +24,6 @@ final class FiniteWithPoolTest extends AbstractPoolTest
 
     protected function createPool(LoopInterface $loop): PoolInterface
     {
-        return Finite::createWithPool(new Infinite(Factory::create(), 0.2), 5);
+        return Finite::createWithPool(new Infinite($loop, 0.2), 5);
     }
 }
