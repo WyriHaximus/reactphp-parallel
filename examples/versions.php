@@ -10,7 +10,7 @@ require dirname(__DIR__) . DIRECTORY_SEPARATOR . 'vendor' . DIRECTORY_SEPARATOR 
 
 $loop = Factory::create();
 
-$finite = new Finite($loop, 2);
+$finite = Finite::create($loop, 2);
 
 $timer = $loop->addPeriodicTimer(1, function () use ($finite) {
     var_export(iteratorOrArrayToArray($finite->info()));
