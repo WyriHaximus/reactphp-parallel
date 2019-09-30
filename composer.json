@@ -22,7 +22,7 @@
     },
     "require-dev": {
         "bruli/php-value-objects": "^2.0",
-        "moneyphp/money": "^3.2",
+        "moneyphp/money": "^3.2 || ^3.2.1",
         "ocramius/package-versions": "^1.4",
         "wyrihaximus/async-test-utilities": "^1.1",
         "wyrihaximus/iterator-or-array-to-array": "^1.1"
