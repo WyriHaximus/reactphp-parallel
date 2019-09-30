@@ -26,6 +26,9 @@ jobs:
       - name: Execute QA suite
         run: make ci-extended
         if: matrix.composer == 'current'
+      - name: Ship Code Coverage
+        run: make ci-coverage
+        if: matrix.composer == 'current'
       - name: Execute QA suite
         run: make ci
         if: matrix.composer != 'current'
