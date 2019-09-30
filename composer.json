@@ -16,7 +16,7 @@
         "react/promise": "^2.7",
         "reactivex/rxphp": "^2.0",
         "wyrihaximus/pool-info": "^1.0",
-        "wyrihaximus/react-parallel-future-to-promise-converter": "^1.0",
+        "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
         "wyrihaximus/react-parallel-runtime": "^1.0",
         "wyrihaximus/ticking-promise": "^1.6"
     },
