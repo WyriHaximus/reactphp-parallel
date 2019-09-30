@@ -1,0 +1,35 @@
+name: Continuous Integration
+on:
+  push:
+  schedule:
+    - cron:  '0 0 * * 0'
+jobs:
+  qa:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Install Dependencies
+        run: composer update --prefer-lowest --no-progress --ansi --no-interaction --prefer-dist
+        if: matrix.composer == 'lowest'
+      - name: Install Dependencies
+        run: composer install --ansi --no-progress --no-interaction --prefer-dist
+        if: matrix.composer == 'current'
+      - name: Install Dependencies
+        run: composer update --ansi --no-progress --no-interaction --prefer-dist
+        if: matrix.composer == 'highest'
+      - name: Execute QA suite
+        run: make ci-extended
+        if: matrix.composer == 'current'
+      - name: Execute QA suite
+        run: make ci
+        if: matrix.composer != 'current'
+      - name: 'Run Example: sleep'
+        run: php examples/sleep.php
+      - name: 'Run Example: versions'
+        run: php examples/versions.php
