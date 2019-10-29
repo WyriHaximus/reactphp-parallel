@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6738c85434880531aaa31bd79df698a4",
+    "content-hash": "e49eecae0535ac816da8ca33034d8d87",
     "packages": [
         {
             "name": "react/event-loop",
@@ -279,6 +279,43 @@
             "time": "2019-09-27T06:28:08+00:00"
         },
         {
+            "name": "wyrihaximus/react-parallel-contracts",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-parallel-contracts.git",
+                "reference": "6f427d8bfa0645222c97747fd64ef1f23403dc17"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-contracts/zipball/6f427d8bfa0645222c97747fd64ef1f23403dc17",
+                "reference": "6f427d8bfa0645222c97747fd64ef1f23403dc17",
+                "shasum": ""
+            },
+            "require": {
+                "php": "^7.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Parallel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com",
+                    "homepage": "http://wyrihaximus.net/"
+                }
+            ],
+            "description": "Interfaces for ReactPHP ext-parallel related packages",
+            "time": "2019-10-09T06:08:16+00:00"
+        },
+        {
             "name": "wyrihaximus/react-parallel-future-to-promise-converter",
             "version": "1.0.1",
             "source": {
@@ -321,6 +358,60 @@
             ],
             "description": "ReactPHP ext-parallel Future to Promise converter",
             "time": "2019-08-30T18:30:53+00:00"
+        },
+        {
+            "name": "wyrihaximus/react-parallel-infinite-pool",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-parallel-infinite-pool.git",
+                "reference": "71027436f78948e09ae32ab2215e7dfaef525496"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-infinite-pool/zipball/71027436f78948e09ae32ab2215e7dfaef525496",
+                "reference": "71027436f78948e09ae32ab2215e7dfaef525496",
+                "shasum": ""
+            },
+            "require": {
+                "ext-parallel": "*",
+                "php": "^7.3",
+                "react/event-loop": "^1.1",
+                "react/promise": "^2.7",
+                "reactivex/rxphp": "^2.0",
+                "wyrihaximus/pool-info": "^1.0",
+                "wyrihaximus/react-parallel-contracts": "dev-master",
+                "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
+                "wyrihaximus/react-parallel-runtime": "^1.0",
+                "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "require-dev": {
+                "bruli/php-value-objects": "^2.0",
+                "moneyphp/money": "^3.2 || ^3.2.1",
+                "ocramius/package-versions": "^1.4",
+                "wyrihaximus/async-test-utilities": "^1.1",
+                "wyrihaximus/iterator-or-array-to-array": "^1.1",
+                "wyrihaximus/react-parallel-pool-tests": "dev-master"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Parallel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com",
+                    "homepage": "http://wyrihaximus.net/"
+                }
+            ],
+            "description": "Bridging ext-parallel and ReactPHP",
+            "time": "2019-10-24T15:40:52+00:00"
         },
         {
             "name": "wyrihaximus/react-parallel-runtime",
@@ -418,16 +509,16 @@
     "packages-dev": [
         {
             "name": "amphp/amp",
-            "version": "v2.2.1",
+            "version": "v2.3.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/amphp/amp.git",
-                "reference": "49a0bf693d5e60e578e5518d87fe7025244f9db5"
+                "reference": "5a294f13810844e3bdda28c0f352821d735ca9b3"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/amphp/amp/zipball/49a0bf693d5e60e578e5518d87fe7025244f9db5",
-                "reference": "49a0bf693d5e60e578e5518d87fe7025244f9db5",
+                "url": "https://api.github.com/repos/amphp/amp/zipball/5a294f13810844e3bdda28c0f352821d735ca9b3",
+                "reference": "5a294f13810844e3bdda28c0f352821d735ca9b3",
                 "shasum": ""
             },
             "require": {
@@ -491,7 +582,7 @@
                 "non-blocking",
                 "promise"
             ],
-            "time": "2019-09-21T21:29:37+00:00"
+            "time": "2019-10-01T19:39:23+00:00"
         },
         {
             "name": "amphp/byte-stream",
@@ -1049,16 +1140,16 @@
         },
         {
             "name": "doctrine/annotations",
-            "version": "v1.7.0",
+            "version": "v1.8.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/doctrine/annotations.git",
-                "reference": "fa4c4e861e809d6a1103bd620cce63ed91aedfeb"
+                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/doctrine/annotations/zipball/fa4c4e861e809d6a1103bd620cce63ed91aedfeb",
-                "reference": "fa4c4e861e809d6a1103bd620cce63ed91aedfeb",
+                "url": "https://api.github.com/repos/doctrine/annotations/zipball/904dca4eb10715b92569fbcd79e201d5c349b6bc",
+                "reference": "904dca4eb10715b92569fbcd79e201d5c349b6bc",
                 "shasum": ""
             },
             "require": {
@@ -1067,7 +1158,7 @@
             },
             "require-dev": {
                 "doctrine/cache": "1.*",
-                "phpunit/phpunit": "^7.5@dev"
+                "phpunit/phpunit": "^7.5"
             },
             "type": "library",
             "extra": {
@@ -1113,7 +1204,7 @@
                 "docblock",
                 "parser"
             ],
-            "time": "2019-08-08T18:11:40+00:00"
+            "time": "2019-10-01T18:55:10+00:00"
         },
         {
             "name": "doctrine/instantiator",
@@ -6967,6 +7058,57 @@
             "time": "2019-08-01T06:48:58+00:00"
         },
         {
+            "name": "wyrihaximus/react-parallel-pool-tests",
+            "version": "dev-master",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/WyriHaximus/reactphp-parallel-pool-tests.git",
+                "reference": "506c66d8b838edfd07a1c670b124d7a346c74a02"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-pool-tests/zipball/506c66d8b838edfd07a1c670b124d7a346c74a02",
+                "reference": "506c66d8b838edfd07a1c670b124d7a346c74a02",
+                "shasum": ""
+            },
+            "require": {
+                "bruli/php-value-objects": "^2.0",
+                "ext-parallel": "*",
+                "moneyphp/money": "^3.2 || ^3.2.1",
+                "ocramius/package-versions": "^1.4",
+                "php": "^7.3",
+                "react/event-loop": "^1.1",
+                "react/promise": "^2.7",
+                "reactivex/rxphp": "^2.0",
+                "wyrihaximus/async-test-utilities": "^1.1",
+                "wyrihaximus/iterator-or-array-to-array": "^1.1",
+                "wyrihaximus/pool-info": "^1.0",
+                "wyrihaximus/react-parallel-contracts": "dev-master",
+                "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
+                "wyrihaximus/react-parallel-runtime": "^1.0",
+                "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "WyriHaximus\\React\\Tests\\Parallel\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Cees-Jan Kiewiet",
+                    "email": "ceesjank@gmail.com",
+                    "homepage": "http://wyrihaximus.net/"
+                }
+            ],
+            "description": "Bridging ext-parallel and ReactPHP",
+            "time": "2019-10-24T08:18:05+00:00"
+        },
+        {
             "name": "wyrihaximus/test-utilities",
             "version": "1.5.0",
             "source": {
@@ -7153,7 +7295,11 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": [],
+    "stability-flags": {
+        "wyrihaximus/react-parallel-contracts": 20,
+        "wyrihaximus/react-parallel-infinite-pool": 20,
+        "wyrihaximus/react-parallel-pool-tests": 20
+    },
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {

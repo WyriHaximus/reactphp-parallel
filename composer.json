@@ -16,7 +16,9 @@
         "react/promise": "^2.7",
         "reactivex/rxphp": "^2.0",
         "wyrihaximus/pool-info": "^1.0",
+        "wyrihaximus/react-parallel-contracts": "dev-master",
         "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
+        "wyrihaximus/react-parallel-infinite-pool": "dev-master",
         "wyrihaximus/react-parallel-runtime": "^1.0",
         "wyrihaximus/ticking-promise": "^1.6"
     },
@@ -25,7 +27,8 @@
         "moneyphp/money": "^3.2 || ^3.2.1",
         "ocramius/package-versions": "^1.4",
         "wyrihaximus/async-test-utilities": "^1.1",
-        "wyrihaximus/iterator-or-array-to-array": "^1.1"
+        "wyrihaximus/iterator-or-array-to-array": "^1.1",
+        "wyrihaximus/react-parallel-pool-tests": "dev-master"
     },
     "config": {
         "platform": {
@@ -60,7 +63,7 @@
             "php-cs-fixer fix --config=.php_cs --ansi --verbose --allow-risky=yes --show-progress=estimating"
         ],
         "infection": [
-            "infection --ansi --threads=4"
+            "infection --ansi --min-msi=100 --min-covered-msi=100 --threads=$(nproc)"
         ],
         "lint-php": [
             "parallel-lint --exclude vendor ."

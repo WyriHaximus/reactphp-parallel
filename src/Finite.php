@@ -7,6 +7,7 @@ use React\EventLoop\LoopInterface;
 use React\Promise\Promise;
 use React\Promise\PromiseInterface;
 use WyriHaximus\PoolInfo\Info;
+use function React\Promise\reject;
 
 final class Finite implements PoolInterface
 {
@@ -22,8 +23,11 @@ final class Finite implements PoolInterface
     /** @var array */
     private $queue;
 
-    /** @var Group|null */
+    /** @var GroupInterface|null */
     private $group;
+
+    /** @var bool */
+    private $closed = false;
 
     public static function create(LoopInterface $loop, int $threadCount): self
     {
@@ -53,6 +57,10 @@ final class Finite implements PoolInterface
 
     public function run(Closure $callable, array $args = []): PromiseInterface
     {
+        if ($this->closed === true) {
+            return reject(ClosedException::create());
+        }
+
         return (new Promise(function ($resolve, $reject): void {
             if ($this->idleRuntimes === 0) {
                 $this->queue[] = [$resolve, $reject];
@@ -70,22 +78,36 @@ final class Finite implements PoolInterface
         });
     }
 
-    public function close(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function close(): bool
     {
+        $this->closed = true;
+
         if ($this->pool instanceof LowLevelPoolInterface) {
             $this->pool->releaseGroup($this->group);
         }
 
-        $this->pool->close();
+         $this->pool->close();
+
+        return true;
     }
 
-    public function kill(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function kill(): bool
     {
+        $this->closed = true;
+
         if ($this->pool instanceof LowLevelPoolInterface) {
             $this->pool->releaseGroup($this->group);
         }
 
         $this->pool->kill();
+
+        return true;
     }
 
     public function info(): iterable
