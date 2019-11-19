@@ -15,6 +15,19 @@ To install via [Composer](http://getcomposer.org/), use the command below, it wi
 composer require wyrihaximus/react-parallel 
 ```
 
+## Pools
+
+## Low level pools
+
+Low level pools only deal with executing closures on the Runtimes (threads) that make out the pools. And as such there 
+is only one low level pool and that is [`Infinite`](https://github.com/WyriHaximus/reactphp-parallel-infinite-pool), which will, as the name suggest, scale infinitely. While you can use 
+such pools directly these are intended to be used by high level pools which have more control over what and how many 
+things you run on these threads.
+
+Low level pools have an additional feature where you can acquire a group lock that will prevent others from killing the 
+pool. The idea behind low level pools is that hey are never used directly be always by encapsulating high level pool. 
+Once all locks are released you can close/kill a low level pool.  
+
 ## License ##
 
 Copyright 2019 [Cees-Jan Kiewiet](http://wyrihaximus.net/)
