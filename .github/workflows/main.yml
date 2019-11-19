@@ -4,16 +4,21 @@ on:
   schedule:
     - cron:  '0 0 * * 0'
 jobs:
-  qa:
+  composer-install:
     strategy:
       matrix:
         php: [7.3]
         composer: [lowest, current, highest]
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
       - name: Install Dependencies
         run: composer update --prefer-lowest --no-progress --ansi --no-interaction --prefer-dist
         if: matrix.composer == 'lowest'
@@ -23,16 +28,108 @@ jobs:
       - name: Install Dependencies
         run: composer update --ansi --no-progress --no-interaction --prefer-dist
         if: matrix.composer == 'highest'
-      - name: Execute QA suite
-        run: make ci-extended
-        if: matrix.composer == 'current'
-      - name: Ship Code Coverage
-        run: make ci-coverage
-        if: matrix.composer == 'current'
-      - name: Execute QA suite
-        run: make ci
-        if: matrix.composer != 'current'
+  examples:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
       - name: 'Run Example: sleep'
-        run: php examples/sleep.php
+        run: php ./examples/sleep.php
       - name: 'Run Example: versions'
-        run: php examples/versions.php
+        run: php ./examples/versions.php
+  tests:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+      - run: ./vendor/bin/phpunit --colors=always -c ./phpunit.xml.dist --coverage-text
+  mutation:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+      - run: ./vendor/bin/infection --ansi --min-msi=100 --min-covered-msi=100 --threads=$(nproc)
+  lint:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+      - run: ./vendor/bin/parallel-lint --exclude vendor .
+  phpstan:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+      - run: ./vendor/bin/phpstan analyse src tests --level max --ansi -c ./phpstan.neon
+  cs:
+    strategy:
+      matrix:
+        php: [7.3]
+        composer: [lowest, current, highest]
+    needs: composer-install
+    runs-on: ubuntu-latest
+    container:
+      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+    steps:
+      - uses: actions/checkout@v1
+      - name: Cache composer packages
+        uses: actions/cache@v1.0.1
+        with:
+          path: ./vendor/
+          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+      - run: ./vendor/bin/php-cs-fixer fix --config=.php_cs --ansi --dry-run --diff --verbose --allow-risky=yes --show-progress=estimating
