@@ -11,7 +11,7 @@ jobs:
         composer: [lowest, current, highest]
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -36,7 +36,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -56,7 +56,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -73,7 +73,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -90,7 +90,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -107,7 +107,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
@@ -124,7 +124,7 @@ jobs:
     needs: composer-install
     runs-on: ubuntu-latest
     container:
-      image: wyrihaximusnet/php:7.3-zts-alpine3.10-dev-root
+      image: wyrihaximusnet/php:${{ matrix.php }}-zts-alpine3.10-dev-root
     steps:
       - uses: actions/checkout@v1
       - name: Cache composer packages
