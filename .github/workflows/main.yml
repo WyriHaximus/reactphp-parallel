@@ -33,6 +33,7 @@ jobs:
       matrix:
         php: [7.3]
         composer: [lowest, current, highest]
+        example: [sleep, versions]
     needs: composer-install
     runs-on: ubuntu-latest
     container:
@@ -44,10 +45,8 @@ jobs:
         with:
           path: ./vendor/
           key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
-      - name: 'Run Example: sleep'
-        run: php ./examples/sleep.php
-      - name: 'Run Example: versions'
-        run: php ./examples/versions.php
+       - name: 'Run Example: ${{ matrix.example }}'
+        run: php ./examples/${{ matrix.example }}.php
   tests:
     strategy:
       matrix:
