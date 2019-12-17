@@ -36,3 +36,18 @@ unit-coverage:
 
 ci-coverage:
 	composer ci-coverage
+
+make qa-unit:
+	./vendor/bin/phpunit --colors=always -c ./phpunit.xml.dist --coverage-text
+
+make qa-mutation:
+	./vendor/bin/infection --ansi --min-msi=100 --min-covered-msi=100 --threads=$(nproc)
+
+make qa-lint:
+	./vendor/bin/parallel-lint --exclude vendor .
+
+make qa-phpstan:
+	./vendor/bin/phpstan analyse src tests --level max --ansi -c ./phpstan.neon
+
+make qa-cs:
+	./vendor/bin/php-cs-fixer fix --config=.php_cs --ansi --dry-run --diff --verbose --allow-risky=yes --show-progress=estimating
