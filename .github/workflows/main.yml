@@ -18,7 +18,7 @@ jobs:
         uses: actions/cache@v1.0.1
         with:
           path: ./vendor/
-          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
       - name: Install Dependencies
         run: composer update --prefer-lowest --no-progress --ansi --no-interaction --prefer-dist
         if: matrix.composer == 'lowest'
@@ -44,7 +44,7 @@ jobs:
         uses: actions/cache@v1.0.1
         with:
           path: ./vendor/
-          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
        - name: 'Run Example: ${{ matrix.example }}'
         run: php ./examples/${{ matrix.example }}.php
   qa:
@@ -63,5 +63,5 @@ jobs:
         uses: actions/cache@v1.0.1
         with:
           path: ./vendor/
-          key: ${{ runner.OS }}-${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
+          key: ${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
       - run: make qa-${{ matrix.command }}
