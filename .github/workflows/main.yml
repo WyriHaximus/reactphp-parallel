@@ -45,7 +45,7 @@ jobs:
         with:
           path: ./vendor/
           key: ${{ matrix.composer }}-${{ hashFiles('**/composer.lock') }}
-       - name: 'Run Example: ${{ matrix.example }}'
+      - name: 'Run Example: ${{ matrix.example }}'
         run: php ./examples/${{ matrix.example }}.php
   qa:
     strategy:
