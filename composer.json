@@ -16,19 +16,18 @@
         "react/promise": "^2.7",
         "reactivex/rxphp": "^2.0",
         "wyrihaximus/pool-info": "^1.0",
-        "wyrihaximus/react-parallel-contracts": "dev-master",
+        "wyrihaximus/react-parallel-contracts": "^1.0",
         "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
-        "wyrihaximus/react-parallel-infinite-pool": "dev-master",
+        "wyrihaximus/react-parallel-infinite-pool": "^1.0",
         "wyrihaximus/react-parallel-runtime": "^1.0",
         "wyrihaximus/ticking-promise": "^1.6"
     },
     "require-dev": {
-        "bruli/php-value-objects": "^2.0",
         "moneyphp/money": "^3.2 || ^3.2.1",
         "ocramius/package-versions": "^1.4",
         "wyrihaximus/async-test-utilities": "^1.1",
         "wyrihaximus/iterator-or-array-to-array": "^1.1",
-        "wyrihaximus/react-parallel-pool-tests": "dev-master"
+        "wyrihaximus/react-parallel-pool-tests": "^1.0"
     },
     "config": {
         "platform": {

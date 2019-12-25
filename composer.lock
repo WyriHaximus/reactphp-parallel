@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e49eecae0535ac816da8ca33034d8d87",
+    "content-hash": "cbb7feb479e52460ab38cde23418762e",
     "packages": [
         {
             "name": "react/event-loop",
@@ -280,20 +280,22 @@
         },
         {
             "name": "wyrihaximus/react-parallel-contracts",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-parallel-contracts.git",
-                "reference": "6f427d8bfa0645222c97747fd64ef1f23403dc17"
+                "reference": "463a28f9dffaf579ce4ca1026eab50f75b0c77d6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-contracts/zipball/6f427d8bfa0645222c97747fd64ef1f23403dc17",
-                "reference": "6f427d8bfa0645222c97747fd64ef1f23403dc17",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-contracts/zipball/463a28f9dffaf579ce4ca1026eab50f75b0c77d6",
+                "reference": "463a28f9dffaf579ce4ca1026eab50f75b0c77d6",
                 "shasum": ""
             },
             "require": {
-                "php": "^7.3"
+                "php": "^7.3",
+                "react/promise": "^3.0 || ^2.7",
+                "wyrihaximus/pool-info": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -313,7 +315,7 @@
                 }
             ],
             "description": "Interfaces for ReactPHP ext-parallel related packages",
-            "time": "2019-10-09T06:08:16+00:00"
+            "time": "2019-11-21T21:02:24+00:00"
         },
         {
             "name": "wyrihaximus/react-parallel-future-to-promise-converter",
@@ -361,16 +363,16 @@
         },
         {
             "name": "wyrihaximus/react-parallel-infinite-pool",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-parallel-infinite-pool.git",
-                "reference": "71027436f78948e09ae32ab2215e7dfaef525496"
+                "reference": "46f96eba28fbdab4ece8d511cac2b678c6419297"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-infinite-pool/zipball/71027436f78948e09ae32ab2215e7dfaef525496",
-                "reference": "71027436f78948e09ae32ab2215e7dfaef525496",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-infinite-pool/zipball/46f96eba28fbdab4ece8d511cac2b678c6419297",
+                "reference": "46f96eba28fbdab4ece8d511cac2b678c6419297",
                 "shasum": ""
             },
             "require": {
@@ -378,9 +380,8 @@
                 "php": "^7.3",
                 "react/event-loop": "^1.1",
                 "react/promise": "^2.7",
-                "reactivex/rxphp": "^2.0",
                 "wyrihaximus/pool-info": "^1.0",
-                "wyrihaximus/react-parallel-contracts": "dev-master",
+                "wyrihaximus/react-parallel-contracts": "^1.0",
                 "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
                 "wyrihaximus/react-parallel-runtime": "^1.0",
                 "wyrihaximus/ticking-promise": "^1.6"
@@ -389,9 +390,9 @@
                 "bruli/php-value-objects": "^2.0",
                 "moneyphp/money": "^3.2 || ^3.2.1",
                 "ocramius/package-versions": "^1.4",
-                "wyrihaximus/async-test-utilities": "^1.1",
+                "wyrihaximus/async-test-utilities": "^1.2.1",
                 "wyrihaximus/iterator-or-array-to-array": "^1.1",
-                "wyrihaximus/react-parallel-pool-tests": "dev-master"
+                "wyrihaximus/react-parallel-pool-tests": "^1.0"
             },
             "type": "library",
             "autoload": {
@@ -410,8 +411,8 @@
                     "homepage": "http://wyrihaximus.net/"
                 }
             ],
-            "description": "Bridging ext-parallel and ReactPHP",
-            "time": "2019-10-24T15:40:52+00:00"
+            "description": "♾️ Infinite pool for bridging ext-parallel and ReactPHP",
+            "time": "2019-12-25T16:23:55+00:00"
         },
         {
             "name": "wyrihaximus/react-parallel-runtime",
@@ -642,115 +643,6 @@
                 "stream"
             ],
             "time": "2019-07-26T21:22:49+00:00"
-        },
-        {
-            "name": "beberlei/assert",
-            "version": "v3.2.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/beberlei/assert.git",
-                "reference": "65b8152224aef7d3c197d5db05211d4319711b66"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/beberlei/assert/zipball/65b8152224aef7d3c197d5db05211d4319711b66",
-                "reference": "65b8152224aef7d3c197d5db05211d4319711b66",
-                "shasum": ""
-            },
-            "require": {
-                "ext-ctype": "*",
-                "ext-intl": "*",
-                "ext-json": "*",
-                "ext-mbstring": "*",
-                "ext-simplexml": "*",
-                "php": "^7"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "*",
-                "phpstan/phpstan-shim": "*",
-                "phpunit/phpunit": ">=6.0.0 <8"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "Assert\\": "lib/Assert"
-                },
-                "files": [
-                    "lib/Assert/functions.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-2-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Benjamin Eberlei",
-                    "email": "kontakt@beberlei.de",
-                    "role": "Lead Developer"
-                },
-                {
-                    "name": "Richard Quadling",
-                    "email": "rquadling@gmail.com",
-                    "role": "Collaborator"
-                }
-            ],
-            "description": "Thin assertion library for input validation in business models.",
-            "keywords": [
-                "assert",
-                "assertion",
-                "validation"
-            ],
-            "time": "2019-08-23T17:56:26+00:00"
-        },
-        {
-            "name": "bruli/php-value-objects",
-            "version": "v2.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/bruli/php-value-objects.git",
-                "reference": "bb1b22fd01cb3e3b0587632bf84aee4df53684ad"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/bruli/php-value-objects/zipball/bb1b22fd01cb3e3b0587632bf84aee4df53684ad",
-                "reference": "bb1b22fd01cb3e3b0587632bf84aee4df53684ad",
-                "shasum": ""
-            },
-            "require": {
-                "beberlei/assert": "~3.0",
-                "php": "^7.1",
-                "symfony/intl": "~4.0"
-            },
-            "require-dev": {
-                "friendsofphp/php-cs-fixer": "^2.15",
-                "fzaninotto/faker": "^1.6",
-                "phpunit/phpunit": "~7.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "PhpValueObjects": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Pablo Braulio",
-                    "email": "brulics@gmail.com"
-                }
-            ],
-            "description": "PHP Value objects to use for DDD domains.",
-            "keywords": [
-                "ddd",
-                "objects",
-                "php",
-                "value"
-            ],
-            "time": "2019-07-25T07:55:35+00:00"
         },
         {
             "name": "clue/block-react",
@@ -5738,81 +5630,6 @@
             "time": "2019-08-14T12:26:46+00:00"
         },
         {
-            "name": "symfony/intl",
-            "version": "v4.3.4",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/intl.git",
-                "reference": "8db5505703c5bdb23d524fd994dad2f781966538"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/intl/zipball/8db5505703c5bdb23d524fd994dad2f781966538",
-                "reference": "8db5505703c5bdb23d524fd994dad2f781966538",
-                "shasum": ""
-            },
-            "require": {
-                "php": "^7.1.3",
-                "symfony/polyfill-intl-icu": "~1.0"
-            },
-            "require-dev": {
-                "symfony/filesystem": "~3.4|~4.0"
-            },
-            "suggest": {
-                "ext-intl": "to use the component with locales other than \"en\""
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Symfony\\Component\\Intl\\": ""
-                },
-                "classmap": [
-                    "Resources/stubs"
-                ],
-                "exclude-from-classmap": [
-                    "/Tests/"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Bernhard Schussek",
-                    "email": "bschussek@gmail.com"
-                },
-                {
-                    "name": "Eriksen Costa",
-                    "email": "eriksen.costa@infranology.com.br"
-                },
-                {
-                    "name": "Igor Wiedler",
-                    "email": "igor@wiedler.ch"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "A PHP replacement layer for the C intl extension that includes additional data from the ICU library.",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "i18n",
-                "icu",
-                "internationalization",
-                "intl",
-                "l10n",
-                "localization"
-            ],
-            "time": "2019-08-26T08:26:39+00:00"
-        },
-        {
             "name": "symfony/options-resolver",
             "version": "v4.3.4",
             "source": {
@@ -5921,64 +5738,6 @@
                 "ctype",
                 "polyfill",
                 "portable"
-            ],
-            "time": "2019-08-06T08:03:45+00:00"
-        },
-        {
-            "name": "symfony/polyfill-intl-icu",
-            "version": "v1.12.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/symfony/polyfill-intl-icu.git",
-                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-intl-icu/zipball/66810b9d6eb4af54d543867909d65ab9af654d7e",
-                "reference": "66810b9d6eb4af54d543867909d65ab9af654d7e",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=5.3.3",
-                "symfony/intl": "~2.3|~3.0|~4.0|~5.0"
-            },
-            "suggest": {
-                "ext-intl": "For best performance"
-            },
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "1.12-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Nicolas Grekas",
-                    "email": "p@tchwork.com"
-                },
-                {
-                    "name": "Symfony Community",
-                    "homepage": "https://symfony.com/contributors"
-                }
-            ],
-            "description": "Symfony polyfill for intl's ICU-related data and classes",
-            "homepage": "https://symfony.com",
-            "keywords": [
-                "compatibility",
-                "icu",
-                "intl",
-                "polyfill",
-                "portable",
-                "shim"
             ],
             "time": "2019-08-06T08:03:45+00:00"
         },
@@ -7059,34 +6818,35 @@
         },
         {
             "name": "wyrihaximus/react-parallel-pool-tests",
-            "version": "dev-master",
+            "version": "1.0.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/WyriHaximus/reactphp-parallel-pool-tests.git",
-                "reference": "506c66d8b838edfd07a1c670b124d7a346c74a02"
+                "reference": "2e650354dd157cc307a0087ec399e4f0648ff7a0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-pool-tests/zipball/506c66d8b838edfd07a1c670b124d7a346c74a02",
-                "reference": "506c66d8b838edfd07a1c670b124d7a346c74a02",
+                "url": "https://api.github.com/repos/WyriHaximus/reactphp-parallel-pool-tests/zipball/2e650354dd157cc307a0087ec399e4f0648ff7a0",
+                "reference": "2e650354dd157cc307a0087ec399e4f0648ff7a0",
                 "shasum": ""
             },
             "require": {
-                "bruli/php-value-objects": "^2.0",
                 "ext-parallel": "*",
                 "moneyphp/money": "^3.2 || ^3.2.1",
                 "ocramius/package-versions": "^1.4",
                 "php": "^7.3",
                 "react/event-loop": "^1.1",
                 "react/promise": "^2.7",
-                "reactivex/rxphp": "^2.0",
                 "wyrihaximus/async-test-utilities": "^1.1",
                 "wyrihaximus/iterator-or-array-to-array": "^1.1",
                 "wyrihaximus/pool-info": "^1.0",
-                "wyrihaximus/react-parallel-contracts": "dev-master",
+                "wyrihaximus/react-parallel-contracts": "^1.0",
                 "wyrihaximus/react-parallel-future-to-promise-converter": "^1.1 || ^1.0.1",
                 "wyrihaximus/react-parallel-runtime": "^1.0",
                 "wyrihaximus/ticking-promise": "^1.6"
+            },
+            "require-dev": {
+                "wyrihaximus/async-test-utilities": "^1.2.1"
             },
             "type": "library",
             "autoload": {
@@ -7105,8 +6865,8 @@
                     "homepage": "http://wyrihaximus.net/"
                 }
             ],
-            "description": "Bridging ext-parallel and ReactPHP",
-            "time": "2019-10-24T08:18:05+00:00"
+            "description": "🎱 Pool tests for bridging ext-parallel and ReactPHP",
+            "time": "2019-12-25T15:39:29+00:00"
         },
         {
             "name": "wyrihaximus/test-utilities",
@@ -7295,11 +7055,7 @@
     ],
     "aliases": [],
     "minimum-stability": "stable",
-    "stability-flags": {
-        "wyrihaximus/react-parallel-contracts": 20,
-        "wyrihaximus/react-parallel-infinite-pool": 20,
-        "wyrihaximus/react-parallel-pool-tests": 20
-    },
+    "stability-flags": [],
     "prefer-stable": false,
     "prefer-lowest": false,
     "platform": {
