@@ -1,3 +1,6 @@
+This package has been moved to: [`https://github.com/reactphp-parallel/reactphp-parallel`](https://github.com/reactphp-parallel/reactphp-parallel)
+
+
 # reactphp-parallel
 
 [![Build Status](https://travis-ci.com/WyriHaximus/reactphp-parallel.png)](https://travis-ci.com/WyriHaximus/reactphp-parallel)
